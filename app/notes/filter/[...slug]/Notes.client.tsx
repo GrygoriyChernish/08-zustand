@@ -10,16 +10,17 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import NotFoundNotes from '@/components/NotFoundNotes/NotFoundNotes';
-import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import Link from 'next/link';
 
-export default function NotesClient() {
+interface NotesClientProps {
+  tag: string;
+}
+
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
 
-  const { slug } = useParams<{ slug: string }>();
-  const tag = slug && slug[0] === 'All' ? '' : slug[0];
   const queryKey = tag
     ? ['notes', { page, searchValue, tag }]
     : ['notes', { page, searchValue }];

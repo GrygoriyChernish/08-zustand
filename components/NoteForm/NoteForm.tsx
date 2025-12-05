@@ -3,7 +3,7 @@
 import { createNote } from '@/lib/api';
 import { useNoteDraftStore } from '@/lib/store/noteStore';
 import { NewNoteContent } from '@/types/note';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { PulseLoader } from 'react-spinners';
 
@@ -13,9 +13,12 @@ export default function NoteForm() {
   const router = useRouter();
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
 
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
       clearDraft();
       router.push('/notes/filter/All');
     },

@@ -8,7 +8,7 @@ import NotesClient from './Notes.client';
 import { Metadata } from 'next';
 
 interface NotesPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string[] }>;
 }
 
 export async function generateMetadata({
@@ -21,7 +21,7 @@ export async function generateMetadata({
     openGraph: {
       title: `Notes by tag: ${slug}`,
       description: `Filtered notes by ${slug}`,
-      url: `https://notehub.com/notes/${slug}`,
+      url: `https://notehub.com/notes/${slug.join('')}`,
       siteName: 'NoteHub',
       images: [
         {
@@ -52,7 +52,7 @@ export default async function NotesPage({ params }: NotesPageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient />
+      <NotesClient tag={tag} />
     </HydrationBoundary>
   );
 }
