@@ -35,6 +35,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
   const handleChange = useDebouncedCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       setSearchValue(evt.target.value.trim());
+      setPage(1);
     },
     500
   );
